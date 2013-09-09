@@ -109,7 +109,6 @@ function LevelMicroBlog(dbPath) {
   this.db = sublevel(level(dbPath, { keyEncoding: bytewise, valueEncoding: 'json' }));
   this.Users = new Users(this);
   this.Messages = new Messages(this);
-  this.Feed = new Feed(this);
 }
 
 LevelMicroBlog.prototype.close = function(cb) {
