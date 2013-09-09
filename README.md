@@ -16,6 +16,13 @@ $ npm install level-orm
 
 ### Basic usage examples
 
+You extend the base class to give you ORM getters and setters.
+
+NB: You pass in a 'container' object to the Model constructor which must have
+a leveldb instance on the `db` property of the object. This allows you to share
+state between models by passing in the same container object for each sublevel
+model object that you create.
+
 ``` js
 var level = require('level');
 var db = level('/tmp/db', { valueEncoding: 'json' });
@@ -88,6 +95,46 @@ var messages = new Messages(db);
 messages.save({ message: 'My message' }, function (err, id) {
   // id will contain the auto-generated ID
 });
+```
+
+### Shared container with multiple sublevel models
+
+```
+var level = require('level');
+var bytewise = require('bytewise/hex');
+var timestamp = require('monotonic-timestamp');
+
+// Container class
+function LevelMicroBlog(dbPath) {
+  this.db = sublevel(level(dbPath, { keyEncoding: bytewise, valueEncoding: 'json' }));
+  this.Users = new Users(this);
+  this.Messages = new Messages(this);
+  this.Feed = new Feed(this);
+}
+
+LevelMicroBlog.prototype.close = function(cb) {
+  if (this.db) return this.db.close(cb);
+  this.db = null;
+  cb(null);
+}
+
+// Users sublevel model
+function Users(container) {
+  Models.call(this, container, 'users', 'handle');
+}
+util.inherits(Users, Models);
+
+// Messages sublevel model
+function Messages(container) {
+  Models.call(this, container, 'messages', 'id');
+}
+util.inherits(Messages, Models);
+Messages.prototype.keyfn = timestamp;
+
+// instantiate a new container class
+var mblog = new LevelMicroBlog('/tmp/db');
+mblog.Users.save({ 'handle': 'EugeneWare', name: 'Eugene Ware'}, ...);
+mblog.Messages.save({ message: 'A new message' }, ...);
 ```
 
 ## License
