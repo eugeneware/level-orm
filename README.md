@@ -99,7 +99,7 @@ messages.save({ message: 'My message' }, function (err, id) {
 
 ### Shared container with multiple sublevel models
 
-```
+``` js
 var level = require('level');
 var bytewise = require('bytewise/hex');
 var timestamp = require('monotonic-timestamp');
