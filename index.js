@@ -1,6 +1,6 @@
 var level = require('level'),
-    through = require('through'),
-    sublevel = require('level-sublevel');
+    through2 = require('through2'),
+    sublevel = require('level-sublevel/bytewise');
 
 module.exports = Models;
 
@@ -18,12 +18,14 @@ function Models(container, name, key) {
 
 Models.prototype.all = function(cb) {
   var models = [];
-  this[this.name].createReadStream().pipe(through(write, end));
-  function write(model) {
+  this[this.name].createReadStream().pipe(through2.obj(write, end));
+  function write(model, enc, next) {
     models.push(model.value);
+    next();
   }
-  function end() {
+  function end(next) {
     cb(null, models);
+    next();
   }
 };
 
