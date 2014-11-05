@@ -34,7 +34,6 @@
     "bytewise": "^0.7.1",
     "level": "^0.18.0",
     "level-sublevel": "^6.3.15",
-    "through": "~2.3.4",
     "through2": "^0.6.3"
   }
 }
