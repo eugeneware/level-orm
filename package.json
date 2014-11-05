@@ -4,7 +4,7 @@
   "description": "Simple ORM built on leveldb/levelup",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/.bin/grunt ci"
+    "test": "node_modules/.bin/mocha"
   },
   "repository": {
     "type": "git",
@@ -26,13 +26,6 @@
   "devDependencies": {
     "after": "~0.8.1",
     "expect.js": "^0.3.1",
-    "grunt": "~0.4.1",
-    "grunt-cli": "~0.1.9",
-    "grunt-complexity": "^0.2.0",
-    "grunt-contrib-jshint": "^0.10.0",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-mocha-cli": "^1.10.0",
-    "level": "^0.18.0",
     "monotonic-timestamp": "0.0.9",
     "range": "0.0.2",
     "rimraf": "~2.2.2"
