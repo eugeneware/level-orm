@@ -39,7 +39,7 @@ var users = new Users(db);
 // save to database
 users.save({ handle: 'eugeneware', name: 'Eugene', email: 'eugene@noblesamurai.com' },
   function (err, id) {
-    // id will be the primary key 
+    // id will be the primary key
   });
 
 // retrieve from database
@@ -72,6 +72,10 @@ util.inherits(Feed, Models);
 var feed = new Feed(db);
 feed.save({ user: 'eugeneware', id: 123, message: 'Test' }, cb);
 ```
+
+**NB: That in leveldb the default encoding is 'utf8' where keys will sort
+lexicographically. Thus `10` will sort before `2` unless you use an
+encoding such as `bytewise` to change this behaviour.**
 
 ### Auto Incremented Keys
 
@@ -136,22 +140,35 @@ mblog.Users.save({ 'handle': 'EugeneWare', name: 'Eugene Ware'}, ...);
 mblog.Messages.save({ message: 'A new message' }, ...);
 ```
 
+## Use binary bytewise encoded sublevels
+
+The original `level-sublevel`(https://github.com/dominictarr/level-sublevel)
+didn't support binary encodings, but as of 0.6 of `sublevel`, you can use
+native bytewise encoding of sublevels. If you want this, then require
+`level-orm/bytewise` and the underlying sublevel will use bytewise to
+encode sublevels:
+
+``` js
+var Model = require('level-orm/bytewise');
+// extend as usual
+```
+
 ## License
 
-### Copyright (c) 2013, Eugene Ware
+### Copyright (c) 2014, Eugene Ware
 #### All rights reserved.
-  
+
 Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:  
+modification, are permitted provided that the following conditions are met:
 1. Redistributions of source code must retain the above copyright
-   notice, this list of conditions and the following disclaimer.  
+   notice, this list of conditions and the following disclaimer.
 2. Redistributions in binary form must reproduce the above copyright
    notice, this list of conditions and the following disclaimer in the
-   documentation and/or other materials provided with the distribution.  
+   documentation and/or other materials provided with the distribution.
 3. Neither the name of Deoxxa Development nor the names of its contributors
    may be used to endorse or promote products derived from this software
-   without specific prior written permission.  
-  
+   without specific prior written permission.
+
 THIS SOFTWARE IS PROVIDED BY EUGENE WARE ''AS IS'' AND ANY
 EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
