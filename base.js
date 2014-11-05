@@ -2,9 +2,13 @@ var level = require('level'),
     through2 = require('through2');
 
 /**
- * @param sublevel sublevel implementation to pass use
+ * Create the Model base class
+ *
+ * @param {sublevel} sublevel implementation to use
  */
+
 module.exports = function (sublevel) {
+
   /**
    * Model
    */
