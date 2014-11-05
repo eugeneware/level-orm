@@ -3,19 +3,18 @@ var expect = require('expect.js'),
     rimraf = require('rimraf'),
     level = require('level'),
     path = require('path'),
-    bytewise = require('bytewise/hex'),
     range = require('range').range,
     after = require('after'),
     timestamp = require('monotonic-timestamp'),
     through2 = require('through2'),
     Models = require('..');
 
-describe('level-orm', function() {
+describe('level-orm (string keys)', function() {
   var db, dbPath = path.join(__dirname, '..', 'data', 'testdb');
 
   beforeEach(function(done) {
     rimraf.sync(dbPath);
-    db = level(dbPath, { keyEncoding: bytewise, valueEncoding: 'json' });
+    db = level(dbPath, { keyEncoding: 'utf8', valueEncoding: 'json' });
     done();
   });
 
@@ -196,3 +195,4 @@ describe('level-orm', function() {
     }
   });
 });
+

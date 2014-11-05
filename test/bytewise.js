@@ -3,14 +3,14 @@ var expect = require('expect.js'),
     rimraf = require('rimraf'),
     level = require('level'),
     path = require('path'),
-    bytewise = require('bytewise/hex'),
+    bytewise = require('bytewise'),
     range = require('range').range,
     after = require('after'),
     timestamp = require('monotonic-timestamp'),
     through2 = require('through2'),
-    Models = require('..');
+    Models = require('../bytewise');
 
-describe('level-orm', function() {
+describe('level-orm (bytewise sublevel)', function() {
   var db, dbPath = path.join(__dirname, '..', 'data', 'testdb');
 
   beforeEach(function(done) {
