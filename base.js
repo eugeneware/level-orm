@@ -1,5 +1,4 @@
-var level = require('level'),
-    through2 = require('through2');
+var through2 = require('through2');
 
 /**
  * Create the Model base class
