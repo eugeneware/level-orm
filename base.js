@@ -17,12 +17,12 @@ module.exports = function (sublevel) {
     this.key = key;
     this.container = container;
     this.db = sublevel(container.db || container);
-    this[this.name] = this.db.sublevel(name);
+    this.sublevel = this.db.sublevel(name);
   }
 
   Models.prototype.all = function(cb) {
     var models = [];
-    this[this.name].createReadStream().pipe(through2.obj(write, end));
+    this.sublevel.createReadStream().pipe(through2.obj(write, end));
     function write(model, enc, next) {
       models.push(model.value);
       next();
@@ -35,21 +35,21 @@ module.exports = function (sublevel) {
 
   Models.prototype.save = function(model, cb) {
     var key = this.getKey(model);
-    this[this.name].put(key, model, function (err) {
+    this.sublevel.put(key, model, function (err) {
       if (err) return cb(err);
       cb(null, key);
     });
   };
 
   Models.prototype.get = function(key, cb) {
-    this[this.name].get(key, function (err, data) {
+    this.sublevel.get(key, function (err, data) {
       if (err) return cb(err);
       cb(null, data);
     });
   };
 
   Models.prototype.del = function(key, cb) {
-    this[this.name].del(key, cb);
+    this.sublevel.del(key, cb);
   };
 
   Models.prototype.getKey = function(model) {
@@ -69,7 +69,7 @@ module.exports = function (sublevel) {
   Models.prototype.createReadStream = function(options) {
     options = options || { };
     if (typeof options.keys === 'undefined') options.keys = false;
-    return this[this.name].createReadStream(options);
+    return this.sublevel.createReadStream(options);
   };
 
   return Models;
